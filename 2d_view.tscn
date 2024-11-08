@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://blpbils8fbj0p"]
+
+[ext_resource type="Script" path="res://room_creator.gd" id="1_6vc8f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_50shn"]
+
+[node name="2DView" type="Node2D"]
+
+[node name="RoomCreator" type="Area2D" parent="."]
+script = ExtResource("1_6vc8f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomCreator"]
+position = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_50shn")
+
+[connection signal="input_event" from="RoomCreator" to="RoomCreator" method="_on_input_event"]

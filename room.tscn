@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://crvr3a0scsxr4"]
+
+[ext_resource type="Script" path="res://room.gd" id="1_d4soo"]
+
+[node name="Room" type="Polygon2D"]
+position = Vector2(10, 10)
+polygon = PackedVector2Array(-10, -10, -10, 10, 10, 10, 10, -10)
+script = ExtResource("1_d4soo")
