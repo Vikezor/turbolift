@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://crvr3a0scsxr4"]
+[gd_scene load_steps=3 format=3 uid="uid://crvr3a0scsxr4"]
 
 [ext_resource type="Script" path="res://room.gd" id="1_d4soo"]
+[ext_resource type="Shape2D" uid="uid://cj88dkvh5744b" path="res://room_creator_collision.tres" id="2_pwhys"]
 
-[node name="Room" type="Polygon2D"]
-position = Vector2(10, 10)
-polygon = PackedVector2Array(-10, -10, -10, 10, 10, 10, 10, -10)
+[node name="Room" type="Area2D"]
 script = ExtResource("1_d4soo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = ExtResource("2_pwhys")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-10, -10, -10, 10, 10, 10, 10, -10)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
