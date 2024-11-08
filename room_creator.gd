@@ -12,4 +12,5 @@ func _process(delta):
 
 
 func _on_input_event(viewport, event, shape_idx):
-	get_parent().add_child(preload("res://room.tscn").instantiate())
+	if event is InputEventMouseButton and event.pressed:
+		get_parent().add_child(preload("res://room.tscn").instantiate())
