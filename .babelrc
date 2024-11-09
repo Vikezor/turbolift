@@ -9,5 +9,6 @@
   ],
   "plugins": [
     "external-helpers"
-  ]
+  ],
+  "sourceMaps": true
 }
