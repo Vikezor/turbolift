@@ -2,6 +2,6 @@ import {Floorplan} from './floorplan.js';
 
 export class Building {
     constructor() {
-        this.floors = []
+        this.floors = [new Floorplan()]
     }
 }
