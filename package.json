@@ -18,9 +18,10 @@
   "author": "#0K Amit Verma <amitverma.ukind@gmail.com> (@amitukind)",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.26.0",
     "@thi.ng/geom-hull": "0.0.27",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-latest": "^6.24.1",
+    "@babel/plugin-external-helpers": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
     "bezier-js": "^2.4.0",
     "cssnano": "^3.10.0",
     "esdoc": "^1.1.0",
@@ -40,7 +41,8 @@
     "rollup-plugin-serve": "^0.3.0",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-plugin-uglify-es": "0.0.1",
-    "rollup-watch": "^4.0.0"
+    "rollup-watch": "^4.0.0",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@calvinscofield/three-objloader": "^1.0.4",
