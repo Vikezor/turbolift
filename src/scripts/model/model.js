@@ -19,7 +19,7 @@ export class Model extends EventDispatcher
 	constructor(textureDir)
 	{
 		super();
-		this.building = {floors: []};
+		this.building = new Building();
 		this.scene = new Scene(this, textureDir);
 		this.roomLoadingCallbacks = null;
 		this.roomLoadedCallbacks = null;
