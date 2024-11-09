@@ -2,6 +2,10 @@ import {Floorplan} from './floorplan.js';
 
 export class Building {
     constructor() {
-        this.floors = [new Floorplan()]
+        this.floors = [new Floorplan()];
+    }
+
+    clear() {
+        this.floors = [];
     }
 }

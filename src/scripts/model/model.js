@@ -106,7 +106,7 @@ export class Model extends EventDispatcher
 	newRoom(building, items)
 	{
 		this.scene.clearItems();
-		this.building = { floors: [] };
+		this.building.clear();
 		for (let floor of building.floors) {
 			this.building.floors.push((new Floorplan()).loadFloorplan(floor));
 		}
