@@ -79,7 +79,7 @@ export class Floorplanner2D extends EventDispatcher
 		this.canvas = canvas;
 		this.building = building;
 		this.canvasElement = $('#' + canvas);
-		this.view = new FloorplannerView2D(this.building.floors[0], this, canvas);
+		this.view = new FloorplannerView2D(building, this, canvas);
 
 		//		var cmPerFoot = cmPerFoot;
 		//		var pixelsPerFoot = pixelsPerFoot;
