@@ -121,7 +121,7 @@ export class BlueprintJS
 			* @property {Floorplanner2D} floorplanner
 			* @type {Floorplanner2D}
 			**/
-			this.floorplanner = new Floorplanner2D(options.floorplannerElement, this.model.floorplan);
+			this.floorplanner = new Floorplanner2D(options.floorplannerElement, this.model.building);
 		}
 		else
 		{

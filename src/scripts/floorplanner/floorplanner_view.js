@@ -48,22 +48,22 @@ export const cornerColorSelected = '#00ba8c';
  */
 export class FloorplannerView2D
 {
-	constructor(floorplan, viewmodel, canvas)
+	constructor(building, viewmodel, canvas)
 	{
 		this.canvasElement = document.getElementById(canvas);
 		this.canvas = canvas;
 		this.context = this.canvasElement.getContext('2d');
-		this.floorplan = floorplan;
+		this.building = building;
 		this.viewmodel = viewmodel;
 
 		var scope = this;
-		this._carbonsheet = new CarbonSheet(floorplan, viewmodel, canvas);
+		this._carbonsheet = new CarbonSheet(building.floors[0], viewmodel, canvas);
 		this._carbonsheet.addEventListener(EVENT_UPDATED, function()
 				{
 					scope.draw();
 				});
 
-		this.floorplan.carbonSheet = this._carbonsheet;
+		this.building.floors[0].carbonSheet = this._carbonsheet;
 
 		$(window).resize(() => {scope.handleWindowResize();});
 		$(window).on('orientationchange', () => {scope.orientationChange();});
@@ -116,17 +116,17 @@ export class FloorplannerView2D
 		this.drawOriginCrossHair();
 
 		// this.context.globalAlpha = 0.3;
-		this.floorplan.getRooms().forEach((room) => {this.drawRoom(room);});
+		this.building.floors[0].getRooms().forEach((room) => {this.drawRoom(room);});
 		// this.context.globalAlpha = 1.0;
 
-		this.floorplan.getWalls().forEach((wall) => {this.drawWall(wall);});
-		this.floorplan.getCorners().forEach((corner) => {
+		this.building.floors[0].getWalls().forEach((wall) => {this.drawWall(wall);});
+		this.building.floors[0].getCorners().forEach((corner) => {
 			this.drawCorner(corner);
 //			this.drawCornerAngles(corner);
 			});
 		
 		// this.context.globalAlpha = 0.3;
-//		this.floorplan.getRooms().forEach((room) => {this.drawRoom(room);});
+//		this.building.floors[0].getRooms().forEach((room) => {this.drawRoom(room);});
 		// this.context.globalAlpha = 1.0;
 		
 		if (this.viewmodel.mode == floorplannerModes.DRAW)
@@ -170,7 +170,7 @@ export class FloorplannerView2D
 				this.drawTextLabel(`${angle}°`, this.viewmodel.convertX(location.x), this.viewmodel.convertY(location.y));
 			}
 		}
-		this.floorplan.getWalls().forEach((wall) => {this.drawWallLabels(wall);});
+		this.building.floors[0].getWalls().forEach((wall) => {this.drawWallLabels(wall);});
 		if(this.viewmodel._clickedWallControl != null)
 		{
 			this.drawCircle(this.viewmodel.convertX(this.viewmodel._clickedWallControl.x), this.viewmodel.convertY(this.viewmodel._clickedWallControl.y), 7, '#F7F7F7');
