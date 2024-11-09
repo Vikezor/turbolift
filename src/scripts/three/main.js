@@ -173,11 +173,11 @@ export class Main extends EventDispatcher
 		// setup camera nicely
 		scope.centerCamera();
 
-		scope.model.floorplan.addEventListener(EVENT_UPDATED, this.updatedevent);
+		scope.model.building.floors[0].addEventListener(EVENT_UPDATED, this.updatedevent);
 		scope.model.addEventListener(EVENT_GLTF_READY, this.gltfreadyevent);
 
-		scope.lights = new Lights(scope.scene, scope.model.floorplan);
-		scope.floorplan = new Floorplan3D(scope.scene, scope.model.floorplan, scope.controls);
+		scope.lights = new Lights(scope.scene, scope.model.building.floors[0]);
+		scope.floorplan = new Floorplan3D(scope.scene, scope.model.building.floors[0], scope.controls);
 
 		function animate()
 		{
@@ -335,10 +335,10 @@ export class Main extends EventDispatcher
 	{
 		var scope = this;
 		var yOffset = 150.0;
-		var pan = scope.model.floorplan.getCenter();
+		var pan = scope.model.building.floors[0].getCenter();
 		pan.y = yOffset;
 		scope.controls.target = pan;
-		var distance = scope.model.floorplan.getSize().z * 1.5;
+		var distance = scope.model.building.floors[0].getSize().z * 1.5;
 		var offset = pan.clone().add(new Vector3(0, distance, distance));
 		// scope.controls.setOffset(offset);
 		scope.camera.position.copy(offset);
@@ -389,8 +389,8 @@ export class Main extends EventDispatcher
 
 	switchView(viewpoint)
 	{
-		var center = this.model.floorplan.getCenter();
-		var size = this.model.floorplan.getSize();
+		var center = this.model.building.floors[0].getCenter();
+		var size = this.model.building.floors[0].getSize();
 		var distance = this.controls.object.position.distanceTo(this.controls.target);
 		this.controls.target.copy(center);
 
@@ -435,11 +435,11 @@ export class Main extends EventDispatcher
 	// Send in a value between -1 to 1
 	changeClippingPlanes(clipRatio, clipRatio2)
 	{
-		var size = this.model.floorplan.getSize();
+		var size = this.model.building.floors[0].getSize();
 		size.z = size.z + (size.z * 0.25);
 		size.z = size.z * 0.5;
-		this.clippingPlaneActive.constant = (this.model.floorplan.getSize().z * clipRatio);
-		this.clippingPlaneActive2.constant = (this.model.floorplan.getSize().z * clipRatio2);
+		this.clippingPlaneActive.constant = (this.model.building.floors[0].getSize().z * clipRatio);
+		this.clippingPlaneActive2.constant = (this.model.building.floors[0].getSize().z * clipRatio2);
 
 		if(!this.clippingEnabled)
 		{
