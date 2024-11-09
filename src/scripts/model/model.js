@@ -107,8 +107,13 @@ export class Model extends EventDispatcher
 	{
 		this.scene.clearItems();
 		this.building.clear();
+		let index = 0;
 		for (let floor of building.floors) {
-			this.building.floors.push((new Floorplan()).loadFloorplan(floor));
+			if (index == 0)
+				this.building.floors[0].loadFloorplan(floor);
+			else
+				this.building.floors.push((new Floorplan()).loadFloorplan(floor));
+			index++;
 		}
 		items.forEach((item) => {
 			var matColors = (item.material_colors) ? item.material_colors : [];
