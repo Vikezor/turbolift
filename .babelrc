@@ -10,5 +10,5 @@
   "plugins": [
     "external-helpers"
   ],
-  "sourceMaps": true
+  "sourceMaps": "both"
 }
