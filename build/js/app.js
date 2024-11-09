@@ -626,7 +626,7 @@ function addBlueprintListeners(blueprint3d)
 		}
     }	
     
-    var model_floorplan = blueprint3d.model.floorplan;
+    var model_floorplan = blueprint3d.model.building.floors[0];
     model_floorplan.addEventListener(BP3DJS.EVENT_CORNER_2D_DOUBLE_CLICKED, echoEvents);
     model_floorplan.addEventListener(BP3DJS.EVENT_WALL_2D_DOUBLE_CLICKED, echoEvents);
     model_floorplan.addEventListener(BP3DJS.EVENT_ROOM_2D_DOUBLE_CLICKED, echoEvents);
