@@ -103,15 +103,15 @@ export class Floorplanner2D extends EventDispatcher
 
 		document.addEventListener('keyup', function(event){scope.keyUp(event)});
 		document.addEventListener('keydown', function(event){scope.keyDown(event)});
-		floorplan.addEventListener(EVENT_LOADED, function(){scope.reset();});
+		building.floors[0].addEventListener(EVENT_LOADED, function(){scope.reset();});
 		
 		function updateView()
 		{
 			scope.view.draw();
 		}
-		floorplan.addEventListener(EVENT_CORNER_ATTRIBUTES_CHANGED, updateView);
-		floorplan.addEventListener(EVENT_WALL_ATTRIBUTES_CHANGED, updateView);
-		floorplan.addEventListener(EVENT_ROOM_ATTRIBUTES_CHANGED, updateView);
+		building.floors[0].addEventListener(EVENT_CORNER_ATTRIBUTES_CHANGED, updateView);
+		building.floors[0].addEventListener(EVENT_WALL_ATTRIBUTES_CHANGED, updateView);
+		building.floors[0].addEventListener(EVENT_ROOM_ATTRIBUTES_CHANGED, updateView);
 	}
 	
 	get selectedCorner()
