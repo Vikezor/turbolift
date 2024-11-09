@@ -2,7 +2,8 @@
 node_modules
 static
 *.DS_Store
-build
+build/js/bp3djs.js
+*.min.js
 *.sublime-project
 *.log
 
