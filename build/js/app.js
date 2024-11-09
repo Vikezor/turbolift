@@ -916,7 +916,7 @@ $(document).ready(function()
 
 	$('#showDesign').click(function()
 	{
-		blueprint3d.model.floorplan.update();
+		blueprint3d.model.building.floors[0].update();
 		$('.card').flip(true);
 //		gui.closed = false;
 		$(this).addClass('active');
