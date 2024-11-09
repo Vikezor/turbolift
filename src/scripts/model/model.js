@@ -2,6 +2,7 @@ import {EVENT_LOADED, EVENT_LOADING, EVENT_GLTF_READY} from '../core/events.js';
 import {EventDispatcher, Vector3, Mesh} from 'three';
 import {Floorplan} from './floorplan.js';
 import {Scene} from './scene.js';
+import {Building} from './building.ts';
 
 import {OBJExporter} from '../exporters/OBJExporter.js';
 
@@ -18,7 +19,7 @@ export class Model extends EventDispatcher
 	constructor(textureDir)
 	{
 		super();
-		this.floorplan = new Floorplan();
+		this.building = {floors: []};
 		this.scene = new Scene(this, textureDir);
 		this.roomLoadingCallbacks = null;
 		this.roomLoadedCallbacks = null;
@@ -94,14 +95,21 @@ export class Model extends EventDispatcher
 			items_arr[i] = obj.getMetaData();
 		}
 
-		var room = {floorplan: (this.floorplan.saveFloorplan()),items: items_arr};
+		const floors = [];
+		for (let floor of this.building) {
+			floors.push(floor.saveFloorplan());
+		}
+		var room = {building: {floors: floors},items: items_arr};
 		return JSON.stringify(room);
 	}
 
-	newRoom(floorplan, items)
+	newRoom(building, items)
 	{
 		this.scene.clearItems();
-		this.floorplan.loadFloorplan(floorplan);
+		this.building = { floors: [] };
+		for (let floor of building.floors) {
+			this.building.floors.push((new Floorplan()).loadFloorplan(floor));
+		}
 		items.forEach((item) => {
 			var matColors = (item.material_colors) ? item.material_colors : [];
 			var position = new Vector3(item.xpos, item.ypos, item.zpos);
