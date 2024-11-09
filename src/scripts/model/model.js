@@ -2,7 +2,7 @@ import {EVENT_LOADED, EVENT_LOADING, EVENT_GLTF_READY} from '../core/events.js';
 import {EventDispatcher, Vector3, Mesh} from 'three';
 import {Floorplan} from './floorplan.js';
 import {Scene} from './scene.js';
-import {Building} from './building.ts';
+import {Building} from './building.js';
 
 import {OBJExporter} from '../exporters/OBJExporter.js';
 
