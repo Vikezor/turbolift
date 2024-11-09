@@ -19,7 +19,10 @@ export default {
   treeshake: true,
   plugins: [
       // (!isProduction && serve('build')),
-      (serve('build')),
+      (serve({
+           contentBase: 'build',
+           port: 8080,
+      })),
       resolve({jsnext: true,main: true,browser: true,}),
       babel({exclude: ['node_modules/**', 'src/styles/**']}),
       eslint({exclude: ['src/styles/**',]}),
