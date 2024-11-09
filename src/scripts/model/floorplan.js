@@ -7,6 +7,7 @@ import {WallTypes} from '../core/constants.js';
 import {Version} from '../core/version.js';
 import {cornerTolerance} from '../core/configuration.js';
 
+import {CarbonSheet} from '../floorplanner/carbonsheet.js';
 
 import {HalfEdge} from './half_edge.js';
 import {Corner} from './corner.js';
@@ -670,6 +671,8 @@ export class Floorplan extends EventDispatcher
 
 		if('carbonSheet' in floorplan)
 		{
+			if (this.carbonSheet === null)
+				this.carbonSheet = new CarbonSheet();
 			this.carbonSheet.clear();
 			this.carbonSheet.maintainProportion = false;
 			this.carbonSheet.x = floorplan.carbonSheet['x'];
