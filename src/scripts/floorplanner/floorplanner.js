@@ -76,6 +76,8 @@ export class Floorplanner2D extends EventDispatcher
 		/** mouse position at last click */
 		this.lastY = 0;
 
+		this.floor = 0;
+
 		this.canvas = canvas;
 		this.building = building;
 		this.canvasElement = $('#' + canvas);
@@ -103,15 +105,19 @@ export class Floorplanner2D extends EventDispatcher
 
 		document.addEventListener('keyup', function(event){scope.keyUp(event)});
 		document.addEventListener('keydown', function(event){scope.keyDown(event)});
-		building.floors[0].addEventListener(EVENT_LOADED, function(){scope.reset();});
 		
 		function updateView()
 		{
 			scope.view.draw();
 		}
-		building.floors[0].addEventListener(EVENT_CORNER_ATTRIBUTES_CHANGED, updateView);
-		building.floors[0].addEventListener(EVENT_WALL_ATTRIBUTES_CHANGED, updateView);
-		building.floors[0].addEventListener(EVENT_ROOM_ATTRIBUTES_CHANGED, updateView);
+
+		for (let f in building.floors) {
+			f.addEventListener(EVENT_CORNER_ATTRIBUTES_CHANGED, updateView);
+			f.addEventListener(EVENT_WALL_ATTRIBUTES_CHANGED, updateView);
+			f.addEventListener(EVENT_ROOM_ATTRIBUTES_CHANGED, updateView);
+			f.addEventListener(EVENT_LOADED, function(){scope.reset();});
+		}
+
 	}
 	
 	get selectedCorner()
@@ -148,7 +154,7 @@ export class Floorplanner2D extends EventDispatcher
 		}
 		if(this.activeCorner)
 		{
-			this.building.floors[0].dispatchEvent({type:EVENT_CORNER_2D_DOUBLE_CLICKED, item: this.activeCorner});
+			this.building.floors[floor].dispatchEvent({type:EVENT_CORNER_2D_DOUBLE_CLICKED, item: this.activeCorner});
 			if(!Configuration.getNumericValue('systemUI'))
 			{
 				return;
@@ -163,7 +169,7 @@ export class Floorplanner2D extends EventDispatcher
 		}
 		else if(this.activeWall)
 		{
-			this.building.floors[0].dispatchEvent({type:EVENT_WALL_2D_DOUBLE_CLICKED, item: this.activeWall});
+			this.building.floors[floor].dispatchEvent({type:EVENT_WALL_2D_DOUBLE_CLICKED, item: this.activeWall});
 			if(!Configuration.getNumericValue('systemUI'))
 			{
 				return;
@@ -171,7 +177,7 @@ export class Floorplanner2D extends EventDispatcher
 		}
 		else if(this.activeRoom)
 		{
-			this.building.floors[0].dispatchEvent({type:EVENT_ROOM_2D_DOUBLE_CLICKED, item: this.activeRoom});
+			this.building.floors[floor].dispatchEvent({type:EVENT_ROOM_2D_DOUBLE_CLICKED, item: this.activeRoom});
 			if(!Configuration.getNumericValue('systemUI'))
 			{
 				return;
@@ -296,7 +302,7 @@ export class Floorplanner2D extends EventDispatcher
 		
 		if(this._clickedWall)
 		{
-			this._clickedWallControl = this.building.floors[0].overlappedControlPoint(this._clickedWall, this.mouseX, this.mouseY);
+			this._clickedWallControl = this.building.floors[floor].overlappedControlPoint(this._clickedWall, this.mouseX, this.mouseY);
 			if(this._clickedWallControl != null)
 			{
 				this.view.draw();
@@ -305,9 +311,9 @@ export class Floorplanner2D extends EventDispatcher
 		}
 		
 		
-		var mDownCorner = this.building.floors[0].overlappedCorner(this.mouseX, this.mouseY);
-		var mDownWall = this.building.floors[0].overlappedWall(this.mouseX, this.mouseY);
-		var mDownRoom = this.building.floors[0].overlappedRoom(this.mouseX, this.mouseY);
+		var mDownCorner = this.building.floors[floor].overlappedCorner(this.mouseX, this.mouseY);
+		var mDownWall = this.building.floors[floor].overlappedWall(this.mouseX, this.mouseY);
+		var mDownRoom = this.building.floors[floor].overlappedRoom(this.mouseX, this.mouseY);
 		this._clickedWallControl = null;
 		
 		if(mDownCorner == null && mDownWall == null && mDownRoom == null)
@@ -315,7 +321,7 @@ export class Floorplanner2D extends EventDispatcher
 			this._clickedCorner = undefined;
 			this._clickedWall = undefined;
 			this._clickedRoom = undefined;
-			this.building.floors[0].dispatchEvent({type:EVENT_NOTHING_CLICKED});
+			this.building.floors[floor].dispatchEvent({type:EVENT_NOTHING_CLICKED});
 		}
 		
 		else if(mDownCorner != null)
@@ -324,7 +330,7 @@ export class Floorplanner2D extends EventDispatcher
 			this._clickedWall = undefined;
 			this._clickedRoom = undefined;
 			this._clickedCorner = mDownCorner;
-			this.building.floors[0].dispatchEvent({type:EVENT_CORNER_2D_CLICKED, item: this._clickedCorner});
+			this.building.floors[floor].dispatchEvent({type:EVENT_CORNER_2D_CLICKED, item: this._clickedCorner});
 		}
 		
 		else if(mDownWall != null)
@@ -333,7 +339,7 @@ export class Floorplanner2D extends EventDispatcher
 			this._clickedWall = undefined;
 			this._clickedRoom = undefined;
 			this._clickedWall = mDownWall;
-			this.building.floors[0].dispatchEvent({type:EVENT_WALL_2D_CLICKED, item: this._clickedWall});
+			this.building.floors[floor].dispatchEvent({type:EVENT_WALL_2D_CLICKED, item: this._clickedWall});
 		}
 		
 		else if(mDownRoom != null)
@@ -342,7 +348,7 @@ export class Floorplanner2D extends EventDispatcher
 			this._clickedWall = undefined;
 			this._clickedRoom = undefined;
 			this._clickedRoom = mDownRoom;
-			this.building.floors[0].dispatchEvent({type:EVENT_ROOM_2D_CLICKED, item: this._clickedRoom});
+			this.building.floors[floor].dispatchEvent({type:EVENT_ROOM_2D_CLICKED, item: this._clickedRoom});
 		}
 		this.view.draw();
 	}
@@ -380,23 +386,23 @@ export class Floorplanner2D extends EventDispatcher
 		// update object target
 		if (this.mode != floorplannerModes.DRAW && !this.mouseDown)
 		{
-			var hoverCorner = this.building.floors[0].overlappedCorner(this.mouseX, this.mouseY);
-			var hoverWall = this.building.floors[0].overlappedWall(this.mouseX, this.mouseY);
-			var hoverRoom = this.building.floors[0].overlappedRoom(this.mouseX, this.mouseY);
+			var hoverCorner = this.building.floors[floor].overlappedCorner(this.mouseX, this.mouseY);
+			var hoverWall = this.building.floors[floor].overlappedWall(this.mouseX, this.mouseY);
+			var hoverRoom = this.building.floors[floor].overlappedRoom(this.mouseX, this.mouseY);
 			var draw = false;			
 			
 			// corner takes precendence
 			if (hoverCorner != this.activeCorner && this.activeWall == null)
 			{
 				this.activeCorner = hoverCorner;
-				this.building.floors[0].dispatchEvent({type:EVENT_CORNER_2D_HOVER, item: hoverCorner});
+				this.building.floors[floor].dispatchEvent({type:EVENT_CORNER_2D_HOVER, item: hoverCorner});
 				draw = true;
 			}
 			
 			if (hoverWall != this.activeWall && this.activeCorner == null)
 			{
 				this.activeWall = hoverWall;
-				this.building.floors[0].dispatchEvent({type:EVENT_WALL_2D_HOVER, item: hoverWall});
+				this.building.floors[floor].dispatchEvent({type:EVENT_WALL_2D_HOVER, item: hoverWall});
 				draw = true;
 			}
 			else
@@ -411,7 +417,7 @@ export class Floorplanner2D extends EventDispatcher
 			
 			if(this.activeCorner == null && this.activeWall == null && this.activeRoom !=null)
 			{
-				this.building.floors[0].dispatchEvent({type:EVENT_ROOM_2D_HOVER, item: hoverRoom});
+				this.building.floors[floor].dispatchEvent({type:EVENT_ROOM_2D_HOVER, item: hoverRoom});
 			}
 			
 			if(this.activeRoom == null)
@@ -522,15 +528,15 @@ export class Floorplanner2D extends EventDispatcher
 		if (this.mode == floorplannerModes.DRAW && !this.mouseMoved)
 		{
 			// This creates the corner already
-			var corner = this.building.floors[0].newCorner(this.targetX, this.targetY);
+			var corner = this.building.floors[floor].newCorner(this.targetX, this.targetY);
 
 			// further create a newWall based on the newly inserted corners
 			// (one in the above line and the other in the previous mouse action
 			// of start drawing a new wall)
 			if (this.lastNode != null)
 			{
-				this.building.floors[0].newWall(this.lastNode, corner);
-				this.building.floors[0].newWallsForIntersections(this.lastNode, corner);
+				this.building.floors[floor].newWall(this.lastNode, corner);
+				this.building.floors[floor].newWallsForIntersections(this.lastNode, corner);
 				this.view.draw();
 			}
 			if (corner.mergeWithIntersected() && this.lastNode != null)
@@ -606,7 +612,7 @@ export class Floorplanner2D extends EventDispatcher
 		var centerX = this.canvasElement.innerWidth() / 2.0;
 		var centerY = this.canvasElement.innerHeight() / 2.0;
 		
-		var centerFloorplan = this.building.floors[0].getCenter();
+		var centerFloorplan = this.building.floors[floor].getCenter();
 		this.originX = Dimensioning.cmToPixel(centerFloorplan.x) - centerX;
 		this.originY = Dimensioning.cmToPixel(centerFloorplan.z) - centerY;
 		
