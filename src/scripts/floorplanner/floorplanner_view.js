@@ -63,7 +63,9 @@ export class FloorplannerView2D
 					scope.draw();
 				});
 
-		this.building.floors[0].carbonSheet = this._carbonsheet;
+		for (let i in this.building.floors) {
+			f.carbonSheet = this._carbonsheet;
+		}
 
 		$(window).resize(() => {scope.handleWindowResize();});
 		$(window).on('orientationchange', () => {scope.orientationChange();});
